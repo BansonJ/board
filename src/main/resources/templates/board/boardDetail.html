@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <style>
+    /* General styles */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    /* Header styles */
+    header {
+      height: 90px;
+      width: 100%;
+      text-align: right;
+    }
+
+    /* Label styles */
+    label {
+      margin-top: 30px;
+      margin-left: 310px;
+    }
+
+    /* Table styles */
+    table {
+      border-collapse: collapse;
+      width: 900px;
+      margin: 20px auto;
+    }
+
+    td, th {
+      border: 1px solid gray;
+      padding: 5px;
+      table-layout:fixed;
+      word-break:break-all;
+      height:auto;
+    }
+
+    th:nth-child(1), td:nth-child(1) {
+      width: 50px;
+      text-align: left;
+    }
+
+    /* Heading styles */
+    h2 {
+      text-align: center;
+    }
+
+    /* Link styles */
+    a {
+      text-decoration: none;
+    }
+
+    a:hover, a:focus {
+      text-decoration: underline;
+    }
+
+    /* Article styles */
+    article {
+      margin: 20px;
+    }
+
+    /* Pagination styles */
+    ul.pagination {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    ul.pagination a {
+      display: inline-block;
+        margin-right: 5px;
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        color: #000;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+
+    ul.pagination a.current-page {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    /* Form styles */
+    form {
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      width: 300px;
+    }
+
+    button[type="submit"] {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+<h2>
+  backend 자유게시판
+</h2>
+
+<header>
+  <span>
+    <a th:href="@{/main/logout}">로그아웃</a>
+    <a th:href="@{/main/register}">회원가입</a>
+  </span>
+</header>
+
+<article>
+  <div style="text-align: right;">
+    <a th:if="${user == 'yes'}" th:href="@{/board/editBoard(number=${board.number})}">게시글 수정</a>
+    <a th:if="${user == 'yes'}" th:href="@{/board/deleteBoard(number=${board.number})}">게시글 삭제</a>
+    <a th:href="@{/main}" style="margin-right: 300px;">홈으로</a>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>제목</th>
+      <td th:text="${board.title}"></td>
+    </tr>
+    <tr>
+      <th>내용</th>
+      <td th:text="${board.word}" style="height:500px; vertical-align: top;"></td>
+    </tr>
+    <tr>
+      <th>작성자</th>
+      <td th:text="${board.mem_nickname}"></td>
+    </tr>
+    </thead>
+  </table>
+
+  <br>
+
+  <form th:action="@{/board/boardDetail}" method="post">
+    <div>
+      <input name="num" readonly th:value="${board.number}" type="hidden">
+    </div>
+    <br>
+    <br>
+    <div>
+      <label>댓글:</label>
+      <input type="text" id="comment" name="comment" style="width: 850px;">
+      <button type="submit">등록하기</button>
+    </div>
+  </form>
+
+  <div>
+    <table>
+      <thead>
+      <tr th:each="comment : ${comments}">
+        <td th:text="${comment.mem_nickname}"></td>
+        <td th:text="${comment.comment}"></td>
+        <td>
+          <a th:if="${commentUser == comment.mem_nickname}" th:href="@{/board/editComment(commentId=${comment.id},number=${board.number},commentPage=${CPage})}">댓글 수정</a>
+        </td>
+        <td>
+          <a th:if="${commentUser == comment.mem_nickname}" th:href="@{/board/deleteComment(commentId=${comment.id},number=${board.number})}">댓글 삭제</a>
+        </td>
+      </tr>
+      </thead>
+    </table>
+
+    <ul class="pagination">
+      <a th:text="|<<|"
+         th:href="@{/board/boardDetail(commentPage=1,number=${board.number})}"
+         class="current-page"></a>
+
+      <a th:each="page : ${#numbers.sequence((CPage/10)*10+1,(CPage/10)*10+10)}"
+         th:if="${page <= totalCPage}" th:text="${page}"
+         th:href="@{/board/boardDetail(commentPage=${page},number=${board.number})}"
+         class="current-page"></a>
+
+      <a th:text="|>>|"
+         th:href="@{/board/boardDetail(commentPage=${totalCPage},number=${board.number})}"
+         class="current-page"></a>
+    </ul>
+  </div>
+
+  <br>
+</article>
+
+<footer>
+
+</footer>
+
+</body>
+</html>

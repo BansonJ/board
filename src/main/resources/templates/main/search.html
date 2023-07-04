@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        header {
+            height: 90px;
+            width: 100%;
+            text-align: right;
+        }
+
+        label {
+            margin-top: 30px;
+            margin-left: 310px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 900px;
+            margin: 20px auto;
+        }
+
+        td,
+        th {
+            border: 1px solid gray;
+            padding: 5px;
+            table-layout:fixed;
+            word-break:break-all;
+            height:auto;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 50px;
+            text-align: left;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover,
+        a:focus {
+            text-decoration: underline;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 4px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        a.create-board-link {
+            margin-left: 545px;
+        }
+
+        ul.pagination {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        ul.pagination a {
+            display: inline-block;
+            margin-right: 5px;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            color: #000;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        ul.pagination a.current-page {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+<h2>backend 자유게시판</h2>
+<p th:if="${loginStatus == 'login'}" th:text="|닉네임: ${loginUser}|"></p>
+
+<header>
+        <span>
+            <a th:if="${loginStatus == 'logout'}" th:href="@{/main/login}">로그인</a>
+            <a th:if="${loginStatus == 'login'}" th:href="@{/main/logout}">로그아웃</a>
+            <a th:href="@{/main/register}">회원가입</a>
+        </span>
+</header>
+
+<article>
+    <form th:action="@{/main/search}" method="get">
+        <label>게시글 검색:</label>
+        <input type="text" id="search" name="search" placeholder="게시글 검색">
+        <input type="submit" value="검색">
+    </form>
+
+    <a href="/board/createBoard" class="create-board-link">게시글 작성</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="search, i : ${searches}">
+            <th th:text="${(i.index+1)+(nowPage-1)*10}"></th>
+            <td><a th:text="${search.title}" th:href="@{/board/boardDetail(number=${search.number})}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+        <a th:text="|<<|"
+           th:href="@{/main/search(nowPage=1, search=${search})}"
+           class="current-page"></a>
+
+        <a th:each="page : ${#numbers.sequence((nowPage/10)+1,(nowPage/10)+10)}" th:if="${page <= totalPage}"
+           th:text="${page}" th:href="@{/main/search(nowPage=${page}, search=${search})}" class="current-page"></a>
+
+        <a th:text="|>>|"
+           th:href="@{/main/search(nowPage=${totalPage}, search=${search})}"
+           class="current-page"></a>
+    </ul>
+</article>
+
+<footer></footer>
+</body>
+
+</html>

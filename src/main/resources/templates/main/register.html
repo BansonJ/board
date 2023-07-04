@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            margin: 0 auto;
+            max-width: 400px;
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container my-3">
+  <div class="my-3 border-bottom">
+    <div>
+      <h4>회원가입</h4>
+    </div>
+  </div>
+  <form action="/main/register" method="post">
+    <div>
+      <label>사용자ID</label>
+      <input type="text" name="id">
+    </div>
+    <div>
+      <label>비밀번호</label>
+      <input type="password" name="passwd">
+    </div>
+    <div>
+      <label>비밀번호 확인</label>
+      <input type="password" name="passwd2">
+    </div>
+    <div>
+      <label>이름</label>
+      <input type="text" name="name">
+    </div>
+    <div>
+      <label>닉네임</label>
+      <input type="text" name="nickname">
+    </div>
+    <div>
+      <label>핸드폰 번호</label>
+      <input type="text" name="phone">
+    </div>
+    <div>
+      <label>이메일</label>
+      <input type="email" name="email">
+    </div>
+    <button type="submit">회원가입</button>
+  </form>
+</div>
+</body>
+
+</html>

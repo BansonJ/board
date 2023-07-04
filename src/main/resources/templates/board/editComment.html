@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      height: 90px;
+      width: 100%;
+      text-align: right;
+    }
+
+    label {
+      margin-top: 30px;
+      margin-left: 310px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 900px;
+      margin: 20px auto;
+    }
+
+    td, th {
+      border: 1px solid gray;
+      padding: 5px;
+      table-layout:fixed;
+      word-break:break-all;
+      height:auto;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 50px;
+      text-align: left;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    article {
+      margin: 20px;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      width: 850px;
+    }
+
+    button[type="submit"] {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+<h2>backend 자유게시판</h2>
+
+<header>
+    <span>
+      <a th:href="@{/main/logout}">로그아웃</a>
+      <a th:href="@{/main/register}">회원가입</a>
+    </span>
+</header>
+
+<article>
+    <div style="text-align: right;">
+        <a th:if="${user == 'yes'}" th:href="@{/board/editBoard(number=${board.number})}">게시글 수정</a>
+        <a th:if="${user == 'yes'}" th:href="@{/board/deleteBoard(number=${board.number})}">게시글 삭제</a>
+        <a th:href="@{/main}" style="margin-right: 300px;">홈으로</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>제목</th>
+            <td th:text="${board.title}"></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td th:text="${board.word}" style="height:500px; vertical-align: top;"></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td th:text="${board.mem_nickname}"></td>
+        </tr>
+        </thead>
+    </table>
+    <br>
+    <form th:action="@{/board/boardDetail}" method="post">
+        <div>
+            <input name="num" readonly th:value="${board.number}" type="hidden">
+        </div>
+        <br>
+        <br>
+        <div>
+            <label for="comment">댓글:</label>
+            <input type="text" id="comment" name="comment">
+            <button type="submit">등록하기</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.mem_nickname}"></td>
+            <td th:unless="${comment.id == commentId}" th:text="${comment.comment}"></td>
+            <form th:action="@{/board/editComment}" method="post">
+                <td th:if="${comment.id == commentId}" style="border: none;">
+                    <input type="text" name="editComment" th:value="${comment.comment}">
+                    <button th:if="${comment.id == commentId}" type="submit">수정하기</button>
+                </td>
+                <input name="commentId" readonly th:value="${comment.id}" type="hidden">
+                <input name="number" readonly th:value="${board.number}" type="hidden">
+            </form>
+        </tr>
+        </thead>
+    </table>
+    <br>
+</article>
+
+<footer></footer>
+
+</body>
+</html>

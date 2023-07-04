@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      height: 90px;
+      width: 100%;
+      text-align: right;
+    }
+
+    label {
+      margin-top: 30px;
+      margin-left: 310px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 900px;
+      margin: 20px auto;
+    }
+
+    td, th {
+      border: 1px solid gray;
+      padding: 5px;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 50px;
+      text-align: left;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    article {
+      margin: 20px;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    button[type="submit"] {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+<h2>backend 자유게시판</h2>
+
+<header>
+    <span>
+      <a th:href="@{/main/logout}">로그아웃</a>
+      <a th:href="@{/main/register}">회원가입</a>
+    </span>
+</header>
+
+<article>
+    <form th:action="@{/board/createBoard}" method="post">
+        <div>
+            <label for="title">제목</label>
+            <input style="width: 800px;" type="textarea" id="title" name="title" placeholder="제목">
+        </div>
+
+        <div>
+            <label for="word">내용</label>
+            <input style="width: 800px; height: 450px;" type="textarea" id="word" name="word" placeholder="내용">
+        </div>
+
+        <button type="submit">등록하기</button>
+    </form>
+</article>
+
+<footer></footer>
+</body>
+
+</html>
